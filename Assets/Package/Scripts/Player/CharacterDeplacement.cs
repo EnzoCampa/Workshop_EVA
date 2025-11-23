@@ -1,11 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-
 public class PlayerController : MonoBehaviour
 {
     Rigidbody2D RB;
+    EnnemieAI EnnemieAI;
 
     [SerializeField] float movespeed = 6;
     [SerializeField] float lookOffset = 0f;
@@ -65,4 +64,6 @@ public class PlayerController : MonoBehaviour
     {
         RB.linearVelocity = movement * movespeed;
     }
+
+    
 }
