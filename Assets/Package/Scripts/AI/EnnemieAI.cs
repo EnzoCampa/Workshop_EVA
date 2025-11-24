@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,7 +10,6 @@ public class EnnemieAI : MonoBehaviour
     bool IsCharacter = false;
 
     Vector3 CharacterPosition;
-
 
     private void Start()
     {
@@ -28,27 +26,58 @@ public class EnnemieAI : MonoBehaviour
         }
         else
         {
+            
             Déplacement();
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<PlayerController>() != null)
+        if (collision.CompareTag("Player"))
         {
-            Debug.Log("test");
+            Debug.Log("InsideCollision");
+            CharacterPosition = Target.position;
+            IsCharacter = true;
+        }
+        if (collision.CompareTag("Vision"))
+        {
+            Debug.Log("InsideCollision");
+            CharacterPosition = Target.position;
+            IsCharacter = true;
+        }
+    }
+
+    public void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            Debug.Log("InsideCollision");
+            CharacterPosition = Target.position;
+            IsCharacter = true;
+        }
+        if (collision.CompareTag("Vision"))
+        {
+            Debug.Log("InsideCollision");
+            CharacterPosition = Target.position;
             IsCharacter = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<PlayerController>() != null)
+        if (collision.CompareTag("Player"))
         {
-            Debug.Log("test");
+            Debug.Log("OutsideCOllistion");
+            CharacterPosition = Vector2.zero; IsCharacter = false;
             IsCharacter = true;
         }
-    }
+        if (collision.CompareTag("Vision"))
+        {
+            Debug.Log("OutsideCOllistion");
+            CharacterPosition = Vector2.zero; IsCharacter = false;
+            IsCharacter = true;
+        }
+    }   
     public void Déplacement()
     {
 

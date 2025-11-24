@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Ennemie
+  - Vision
   layers:
   - Default
   - TransparentFX
