@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     Rigidbody2D RB;
-    EnnemieAI EnnemieAI;
 
     [SerializeField] float movespeed = 6;
     [SerializeField] float lookOffset = 0f;
@@ -16,16 +15,13 @@ public class PlayerController : MonoBehaviour
 
 
     Vector2 movement;
-   
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         RB = GetComponent<Rigidbody2D>(); // Cette ligne sert a remplir la variable RB avec les informations du rigibody
         RB.freezeRotation = true;
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         Deplacement();
@@ -47,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
     void Rotation()
     {
-        Vector3 MouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 MouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition); // je récupère la position de ma souris en fonction de la camera
         MouseWorldPos.z = 0f;
 
         Vector2 RotationDir = (MouseWorldPos - transform.position);
@@ -55,15 +51,13 @@ public class PlayerController : MonoBehaviour
         if (RotationDir.magnitude < 0.00001f)
             return; // évite les angles foireux si la souris est "sur" le perso
 
-        float angle = Mathf.Atan2(RotationDir.y, RotationDir.x) * Mathf.Rad2Deg + lookOffset;
+        float angle = Mathf.Atan2(RotationDir.y, RotationDir.x) * Mathf.Rad2Deg + lookOffset; //opération mathématoqie pour la rotation sur l'axe X et Y
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
 
     }
 
     private void FixedUpdate()
-    {
-        RB.linearVelocity = movement * movespeed;
+        {
+            RB.linearVelocity = movement * movespeed; //Calcul du déplacement 
+        }
     }
-
-    
-}

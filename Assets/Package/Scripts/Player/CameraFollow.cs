@@ -12,5 +12,5 @@ public class CameraFollow2D : MonoBehaviour
         Vector3 newPos = target.position;
         newPos.z = -10; 
         transform.position = newPos;
-    }
+    }           
 }
