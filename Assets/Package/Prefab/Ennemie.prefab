@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8883959604485463227}
   - component: {fileID: 410052018802266609}
   - component: {fileID: 5950855374166446786}
+  - component: {fileID: 8642566502460349280}
   m_Layer: 0
   m_Name: Ennemie
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 363536774553832145}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.1215801, y: 4.1889076, z: 1}
+  m_LocalPosition: {x: -2.1215801, y: 4.1889076, z: 0}
   m_LocalScale: {x: 1.0088, y: 1.0088, z: 1.0088}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -107,12 +108,11 @@ MonoBehaviour:
   Player: {fileID: 0}
   spline: {fileID: 0}
   closedLoop: 0
-  localPoints:
-  - {x: -2, y: 0}
-  - {x: 2, y: 0}
-  speed: 2
-  loop: 1
-  useRigidbodyMove: 1
+  PatrolPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  TargetPoint: 0
+  speed: 500
 --- !u!195 &410052018802266609
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -123,7 +123,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 10
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -171,3 +171,30 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 6.8045406
+--- !u!50 &8642566502460349280
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 363536774553832145}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 497976951853846177}
   - component: {fileID: 5363936472185581015}
   - component: {fileID: 1846350943212530290}
+  - component: {fileID: 5374751116688951500}
   m_Layer: 0
   m_Name: CharacterMesh
   m_TagString: Player
@@ -211,7 +212,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -235,8 +236,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81f38fd54808add44aea0554a436395b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movespeed: 6
+  movespeed: 15
   lookOffset: 180
+--- !u!70 &5374751116688951500
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2807684231688163325}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 4.9799995, y: 4.9999995}
+  m_Direction: 0
 --- !u!1 &5360228913453255618
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,7 +288,7 @@ GameObject:
   - component: {fileID: 926307230411413115}
   m_Layer: 0
   m_Name: Vision
-  m_TagString: Untagged
+  m_TagString: Vision
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -264,8 +302,8 @@ Transform:
   m_GameObject: {fileID: 5360228913453255618}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7011055, w: -0.71305764}
-  m_LocalPosition: {x: -14.6, y: -1.17, z: 0}
-  m_LocalScale: {x: 7.700903, y: 23.637806, z: 1}
+  m_LocalPosition: {x: -14.07, y: -1.05, z: 0}
+  m_LocalScale: {x: 16.309742, y: 23.311604, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4510814378246891001}
@@ -386,7 +424,7 @@ GameObject:
   - component: {fileID: 6063712892696965383}
   m_Layer: 0
   m_Name: Character
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -400,7 +438,7 @@ Transform:
   m_GameObject: {fileID: 6929864339939500267}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.70397687, w: 0.7102229}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -20.17, y: -3.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

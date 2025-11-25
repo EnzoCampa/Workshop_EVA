@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Unity.Mathematics;
 using UnityEngine.Splines;
+using NUnit.Framework.Constraints;
 
 public class EnnemieAI : MonoBehaviour
 {
@@ -14,29 +15,28 @@ public class EnnemieAI : MonoBehaviour
 
 
     [Header("Spline")]
-    [SerializeField] private SplineContainer spline;     // Laisse vide : auto-find ou auto-create
-    [SerializeField] private bool closedLoop = false;    // Fermer la courbe
-    
-    [Header("Déplacement")]
-    [SerializeField] private float speed = 2f;           // unités/seconde le long de la spline
+    [SerializeField] private SplineContainer spline;     
+    [SerializeField] private bool closedLoop = false;
+
+    [Header("EnemyPatrol")]
+    public Transform[] PatrolPoints;
+    public int TargetPoint;
+    public float speed;
 
     private Rigidbody2D rb;
 
+    [Header("SplineComponent")]
+    
+
     bool IsCharacter = false;
+
     Vector3 movement;
     Vector3 CharacterPosition;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        if (spline == null)
-            spline = GetComponent<SplineContainer>();
-        int count = spline.Spline.Count;
-        for (int i = 0; i < count; i++)
-        {
-            BezierKnot knot = spline.Spline[i];
-            float3 local = knot.Position;
-            Vector3 world = transform.TransformPoint((Vector3)local);
-        }
+        TargetPoint = 0;
     }
    
     private void Start()
@@ -51,7 +51,7 @@ public class EnnemieAI : MonoBehaviour
         {
             DéplacementToCharacter(); 
         }
-        else
+        else if (IsCharacter == false) 
         {
             Déplacement();
         }
@@ -70,6 +70,7 @@ public class EnnemieAI : MonoBehaviour
             CharacterPosition = Target.position;
             IsCharacter = true;
         }
+       
     }
 
     public void OnTriggerStay2D(Collider2D collision)  // quand je trigger ma collision box je met mon is character a true
@@ -87,45 +88,34 @@ public class EnnemieAI : MonoBehaviour
     }
 
     private void OnTriggerExit2D(Collider2D collision) // quand je sors de ma collision box je met mon is character a false
-    {                                                  // afin de stopper les déplacemnts. De plus, je vide les info de
-        if (collision.CompareTag("Player"))            // position
+    {                                                  // afin de stopper les déplacemnts. De plus, je vide les info de position
+        if (collision.CompareTag("Player") || collision.CompareTag("Vision"))            
         {
             CharacterPosition = Vector2.zero; IsCharacter = false;
             IsCharacter = false;
-        }
-        if (collision.CompareTag("Vision"))
-        {
-            CharacterPosition = Vector2.zero; IsCharacter = false;
-            IsCharacter = false;
+            Debug.Log("test");
         }
     }
 
-    public void Déplacement()
+    void Déplacement()
     {
-        Debug.Log("test");
-        Vector3 pos0 = (Vector3)spline.Spline[0].Position;
-        Vector3 pos1 = (Vector3)spline.Spline[1].Position;
-
-        // Tolérance pour la comparaison de positions
-        float tolerance = 1f;
-
-        Vector2 movement = Vector2.zero;
-
-        if (Vector3.Distance(transform.position, pos0) < tolerance)
+        if (Vector2.Distance(transform.position, PatrolPoints[TargetPoint].position) < 0.1f)
         {
-            movement = new Vector2(pos1.x - pos0.x, pos1.y - pos0.y).normalized;
+            IncreaseTargetInt();
         }
-        else if (Vector3.Distance(transform.position, pos1) < tolerance)
+        Agent.SetDestination(Vector3.MoveTowards(transform.position, PatrolPoints[TargetPoint].position, speed * Time.deltaTime));
+    }
+        
+    void IncreaseTargetInt()
+    {
+        TargetPoint++;
+        if (TargetPoint >= PatrolPoints.Length)
         {
-            movement = new Vector2(pos0.x - pos1.x, pos0.y - pos1.y).normalized;
+            TargetPoint = 0;
         }
-
-        rb.linearVelocity = movement * speed;
-    
     }
 
-
-    public void DéplacementToCharacter()
+    void DéplacementToCharacter()
     {
         Agent.SetDestination(CharacterPosition);
     }
