@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float movespeed = 6;
     [SerializeField] float lookOffset = 0f;
     [SerializeField] private FieldOfView fieldOfView;
+    [SerializeField] private FieldOfView fieldOfViewCircle;
 
     float MoveHorizontal, MoveVertical;
 
@@ -72,6 +73,9 @@ public class PlayerController : MonoBehaviour
 
         fieldOfView.SetOrigin(transform.position);
         fieldOfView.SetAimDirection(aimDir);
+
+        fieldOfViewCircle.SetOrigin(transform.position);
+        fieldOfViewCircle.SetAimDirection(aimDir);
     }
 
     private void FixedUpdate()
