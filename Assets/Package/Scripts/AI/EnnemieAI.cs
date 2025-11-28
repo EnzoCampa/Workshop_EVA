@@ -16,7 +16,6 @@ public class EnnemieAI : MonoBehaviour
 
     [Header("Spline")]
     [SerializeField] private SplineContainer spline;     
-    [SerializeField] private bool closedLoop = false;
 
     [Header("EnemyPatrol")]
     public Transform[] PatrolPoints;
