@@ -33,8 +33,7 @@ public class PlayerController : MonoBehaviour
 
         void Update()
             {
-                Deplacement();
-                Rotation();
+               
             }
 
             void Deplacement()
@@ -77,6 +76,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
         {
-            RB.linearVelocity = movement * movespeed; //Calcul du déplacement 
+        Deplacement();
+        Rotation();
+        RB.linearVelocity = movement * movespeed; //Calcul du déplacement 
         }
     }
