@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2497780658828453056}
   - component: {fileID: 8883959604485463227}
   - component: {fileID: 410052018802266609}
-  - component: {fileID: 5950855374166446786}
   - component: {fileID: 8642566502460349280}
   m_Layer: 0
   m_Name: Ennemie
@@ -106,13 +105,14 @@ MonoBehaviour:
   Agent: {fileID: 410052018802266609}
   Target: {fileID: 0}
   Player: {fileID: 0}
-  spline: {fileID: 0}
-  closedLoop: 0
   PatrolPoints:
   - {fileID: 0}
   - {fileID: 0}
   TargetPoint: 0
   speed: 500
+  IsCharacter: 0
+  rotationSpeed: 720
+  faceDeadZone: 0.05
 --- !u!195 &410052018802266609
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -135,42 +135,6 @@ NavMeshAgent:
   m_BaseOffset: 0.71133333
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!58 &5950855374166446786
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 363536774553832145}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 6.8045406
 --- !u!50 &8642566502460349280
 Rigidbody2D:
   serializedVersion: 5

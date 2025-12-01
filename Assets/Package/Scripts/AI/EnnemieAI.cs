@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using Unity.Mathematics;
@@ -7,96 +7,49 @@ using NUnit.Framework.Constraints;
 
 public class EnnemieAI : MonoBehaviour
 {
-
     [Header("Lien")]
     [SerializeField] NavMeshAgent Agent;
     [SerializeField] Transform Target;
     [SerializeField] PlayerController Player;
 
-
-    [Header("Spline")]
-    [SerializeField] private SplineContainer spline;     
-
     [Header("EnemyPatrol")]
     public Transform[] PatrolPoints;
     public int TargetPoint;
     public float speed;
+    [Header("DÃ©placement")]
+    public int WaitingBeforeRound;
 
     private Rigidbody2D rb;
-
-    [Header("SplineComponent")]
-    
-
-    bool IsCharacter = false;
-
     Vector3 movement;
-    Vector3 CharacterPosition;
+    public bool IsCharacter;
+    public Vector3 CharacterPosition;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         TargetPoint = 0;
     }
-   
+
     private void Start()
     {
-        Agent = GetComponent<NavMeshAgent>(); //je met les infos du navmesh dans mon agent
-        Agent.updateRotation = false; 
+        Agent = GetComponent<NavMeshAgent>(); //je met les infos du navmesh dans mon agent 
+        Agent.updateRotation = false;
         Agent.updateUpAxis = false;
     }
+
     private void Update()
     {
-        if (IsCharacter)
+        if (IsCharacter == false)
         {
-            DéplacementToCharacter(); 
+            DÃ©placement();
         }
-        else if (IsCharacter == false) 
+        else if (IsCharacter == true)
         {
-            Déplacement();
-        }
-    }
-
-
-    public void OnTriggerEnter2D(Collider2D collision) // quand je trigger ma collision box je met mon is character a true
-    {                                                  // afin de start les déplacemnts. De plus, je récupère les info de
-        if (collision.CompareTag("Player"))            // position pour les intégrer dans variable "CharacterPosition"
-        {
-            CharacterPosition = Target.position;
-            IsCharacter = true;
-        }
-        if (collision.CompareTag("Vision"))
-        {
-            CharacterPosition = Target.position;
-            IsCharacter = true;
-        }
-       
-    }
-
-    public void OnTriggerStay2D(Collider2D collision)  // quand je trigger ma collision box je met mon is character a true
-    {                                                  // afin de start les déplacemnts. De plus, je récupère les info de
-        if (collision.CompareTag("Player"))            // position pour les intégrer dans variable "CharacterPosition"
-        {
-            CharacterPosition = Target.position;
-            IsCharacter = true;
-        }
-        if (collision.CompareTag("Vision"))
-        {
-            CharacterPosition = Target.position;
-            IsCharacter = true;
+            DÃ©placementToCharacter();
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision) // quand je sors de ma collision box je met mon is character a false
-    {                                                  // afin de stopper les déplacemnts. De plus, je vide les info de position
-        if (collision.CompareTag("Player") || collision.CompareTag("Vision"))            
-        {
-            CharacterPosition = Vector2.zero; IsCharacter = false;
-            IsCharacter = false;
-            Debug.Log("test");
-        }
-    }
-
-    void Déplacement()
+    void DÃ©placement()
     {
         if (Vector2.Distance(transform.position, PatrolPoints[TargetPoint].position) < 0.1f)
         {
@@ -104,7 +57,7 @@ public class EnnemieAI : MonoBehaviour
         }
         Agent.SetDestination(Vector3.MoveTowards(transform.position, PatrolPoints[TargetPoint].position, speed * Time.deltaTime));
     }
-        
+
     void IncreaseTargetInt()
     {
         TargetPoint++;
@@ -114,8 +67,27 @@ public class EnnemieAI : MonoBehaviour
         }
     }
 
-    void DéplacementToCharacter()
+    public void DÃ©placementToCharacter()
     {
-        Agent.SetDestination(CharacterPosition);
+        float distance = Vector3.Distance(rb.transform.position, CharacterPosition);
+
+        Debug.Log(distance);
+        if (distance < 1f)
+        {
+            Delay();
+            CharacterPosition = Vector2.zero;
+            IsCharacter = false;
+        }
+        else
+        {
+            Agent.SetDestination(CharacterPosition);
+        }
+    }
+
+    private IEnumerator Delay()
+    { 
+        yield return new WaitForSeconds(10);
     }
 }
+
+

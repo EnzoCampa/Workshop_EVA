@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ennemie
   - Vision
+  - EndZone
   layers:
   - Default
   - TransparentFX
