@@ -162,7 +162,14 @@ public class EnnemieAIColliderFOV : MonoBehaviour
     {
         if (collision.CompareTag("Vision") || collision.CompareTag("Player"))
         {
-            CharacterPosition = Target != null ? Target.position : collision.transform.position;
+            if(Target != null)
+            {
+                CharacterPosition = Target.position;
+            }
+            else
+            {
+                CharacterPosition = collision.transform.position;
+            }
             if (EnnemieScriptBase != null)
             {
                 EnnemieScriptBase.IsCharacter = true;
@@ -173,7 +180,7 @@ public class EnnemieAIColliderFOV : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Vision"))
         {
             if (CircileSound != null) CircileSound.Play();
         }
