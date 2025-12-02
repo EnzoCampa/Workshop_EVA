@@ -14,20 +14,20 @@ public class EnnemieAIColliderFOV : MonoBehaviour
 
     [Header("FOV")]
     [Range(10f, 360f)]
-    [SerializeField] private float fov = 120f;                // Angle d'ouverture
-    [SerializeField] private float viewDistance = 15f;        // Portée max en unités monde
-    [SerializeField] private int rayCount = 60;               // Densité des raycasts
+    [SerializeField] private float fov = 120f;                      // Angle d'ouverture
+    [SerializeField] private float viewDistance = 15f;              // Portée max 
+    [SerializeField] private int rayCount = 60;                     // Densité des raycasts
 
     [Header("Masques")]
-    [SerializeField] private LayerMask obstacleMask;          // Murs, décors bloquants
-    [SerializeField] private LayerMask targetMask;            // Joueur (optionnel si tu utilises tags)
+    [SerializeField] private LayerMask obstacleMask;                // Murs, décors bloquants
+    [SerializeField] private LayerMask targetMask;                  // Joueur (optionnel si tu utilises tags)
     
     [Header("Orientation")]
-    [SerializeField] private bool lookAtTarget = false;       // Sinon, utilise la direction de l’ennemi
+    [SerializeField] private bool lookAtTarget = false;            // Sinon, utilise la direction de l’ennemi
     [SerializeField] private Vector2 forwardLocal = Vector2.right; // Avance locale (par défaut +X)
 
     [Header("Debug")]
-    public Vector3 CharacterPosition;
+    public Vector3 CharacterPosition = Vector3.zero;
 
     // Internes
     private Mesh mesh;
@@ -131,54 +131,7 @@ public class EnnemieAIColliderFOV : MonoBehaviour
         poly.SetPath(0, path);
     }
 
-    //    // 3) Détection « FOV + LOS » du joueur (option Timer si tu veux lisser la charge)
-    //    if (Target != null && IsTargetInFOVAndVisible(Target.position, forwardWorld))
-    //    {
-    //        CharacterPosition = Target.position;
-    //        if (CircileSound != null && CircileSound.isPlaying) CircileSound.Stop();
-    //        if (EnnemieScriptBase != null)
-    //        {
-    //            EnnemieScriptBase.IsCharacter = true;
-    //            EnnemieScriptBase.CharacterPosition = CharacterPosition;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        // Pas vu / pas de LOS
-    //        CharacterPosition = Vector2.zero;
-    //        if (EnnemieScriptBase != null) EnnemieScriptBase.IsCharacter = false;
-    //    }
-    //}
-
-    private bool IsTargetInFOVAndVisible(Vector3 targetPos, Vector2 forwardWorld)
-    {
-        // Distance
-        Vector2 toTarget = (Vector2)(targetPos - origin);
-        float dist = toTarget.magnitude;
-        if (dist > viewDistance) return false;
-
-        // FOV : angle
-        Vector2 dir = toTarget.normalized;
-        float dot = Vector2.Dot(forwardWorld, dir);
-        // Seuil = cos(fov/2)
-        float threshold = Mathf.Cos(Mathf.Deg2Rad * (fov * 0.5f));
-        if (dot < threshold) return false;
-
-        // LOS : raycast vers le joueur, bloqué par obstacles
-        RaycastHit2D hit = Physics2D.Raycast(origin, dir, dist, obstacleMask);
-        if (hit.collider != null) return false; // un obstacle bloque la vue
-
-        // Optionnel : vérifier qu’on touche bien la couche « target »
-        if (targetMask.value != 0)
-        {
-            int targetLayer = Target.gameObject.layer;
-            if (((1 << targetLayer) & targetMask) == 0) return false;
-        }
-
-        return true;
-    }
-
-    // Utilitaire : angle en degrés à partir d’un vecteur (0° = +X, anti-horaire)
+  
     private static float GetAngleFromVectorFloat(Vector2 dir)
     {
         dir = dir.normalized;
@@ -190,7 +143,7 @@ public class EnnemieAIColliderFOV : MonoBehaviour
     // Triggers basés sur le PolygonCollider2D
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Vision"))
+        if (collision.CompareTag("Vision") || collision.CompareTag("Player"))
         {
             CharacterPosition = Target != null ? Target.position : collision.transform.position;
             if (CircileSound != null) CircileSound.Stop();
@@ -206,7 +159,7 @@ public class EnnemieAIColliderFOV : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Vision"))
+        if (collision.CompareTag("Vision") || collision.CompareTag("Player"))
         {
             CharacterPosition = Target != null ? Target.position : collision.transform.position;
             if (EnnemieScriptBase != null)
@@ -219,8 +172,9 @@ public class EnnemieAIColliderFOV : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Vision"))
+        if (collision.CompareTag("Vision") || collision.CompareTag("Player"))
         {
+            if (CircileSound != null) CircileSound.Play();
         }
     }
 
