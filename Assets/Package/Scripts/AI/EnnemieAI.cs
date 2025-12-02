@@ -16,13 +16,10 @@ public class EnnemieAI : MonoBehaviour
     public Transform[] PatrolPoints;
     public int TargetPoint;
     public float speed;
-    [Header("Déplacement")]
-    public int WaitingBeforeRound;
 
     private Rigidbody2D rb;
-    Vector3 movement;
-    public bool IsCharacter;
-    public Vector3 CharacterPosition;
+    public bool IsCharacter = false;
+    public Vector3 CharacterPosition = Vector3.zero;
 
     void Awake()
     {
@@ -39,12 +36,15 @@ public class EnnemieAI : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(  IsCharacter);
         if (IsCharacter == false)
         {
+            Debug.Log("Deplacemnt entre les Points");
             Déplacement();
         }
         else if (IsCharacter == true)
         {
+            Debug.Log("Deplacemnt vers le character");
             DéplacementToCharacter();
         }
     }
@@ -71,10 +71,11 @@ public class EnnemieAI : MonoBehaviour
     {
         float distance = Vector3.Distance(rb.transform.position, CharacterPosition);
 
-        Debug.Log(distance);
         if (distance < 1f)
         {
-            Delay();
+            Debug.Log("Corountine entry");
+            StartCoroutine(Delay(10));
+            Debug.Log("Corountine Sortie");
             CharacterPosition = Vector2.zero;
             IsCharacter = false;
         }
@@ -84,10 +85,19 @@ public class EnnemieAI : MonoBehaviour
         }
     }
 
-    private IEnumerator Delay()
+    private IEnumerator Delay(int delay)
     { 
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(delay);
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            UnityEditor.EditorApplication.isPlaying = false;
+            Application.Quit();
+        }
+    }
+
 }
 
 
