@@ -41,8 +41,14 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Fog OF War
+    uniqueID: 4242802489
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Front
+    uniqueID: 695776509
     locked: 0
   m_RenderingLayers:
   - Default

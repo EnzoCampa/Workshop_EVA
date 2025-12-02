@@ -1,4 +1,5 @@
 using CodeMonkey.Utils;
+using Unity.VisualScripting;
 using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private FieldOfView fieldOfViewCircle;
 
     float MoveHorizontal, MoveVertical;
+
+    bool IsLightOn = true;
 
 
     bool dead = false;
@@ -32,38 +35,50 @@ public class PlayerController : MonoBehaviour
     }
 
 
-        void Update()
-            {
-               
-            }
-
-            void Deplacement()
-            {
-                if (dead) // dans ce if je vérifie si mon perso est vivant car si il ne l'est pas je bloque le vecteur de déplacement à 0
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (IsLightOn)  
                 {
-                    movement = Vector2.zero;
-                    return;
+                    fieldOfView.gameObject.SetActive(false);
+                    IsLightOn = false;
                 }
-                MoveHorizontal = Input.GetAxisRaw("Horizontal"); // ici je définis mon movehorizontal et vertical qui sont des float 
-                MoveVertical = Input.GetAxisRaw("Vertical");     // avec l'imput vertical et horizontal
-
-                movement = new Vector2(MoveHorizontal, MoveVertical).normalized;
+            else
+                {
+                    fieldOfView.gameObject.SetActive(true);
+                    IsLightOn = true;
+                }
             }
+    }
 
-            void Rotation()
-            {
-                Vector3 MouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition); // je récupère la position de ma souris en fonction de la camera
-                MouseWorldPos.z = 0f;
+    void Deplacement()
+    {
+        if (dead) // dans ce if je vérifie si mon perso est vivant car si il ne l'est pas je bloque le vecteur de déplacement à 0
+        {
+            movement = Vector2.zero;
+            return;
+        }
+        MoveHorizontal = Input.GetAxisRaw("Horizontal"); // ici je définis mon movehorizontal et vertical qui sont des float 
+        MoveVertical = Input.GetAxisRaw("Vertical");     // avec l'imput vertical et horizontal
 
-                Vector2 RotationDir = (MouseWorldPos - transform.position);
+        movement = new Vector2(MoveHorizontal, MoveVertical).normalized;
+    }
 
-                if (RotationDir.magnitude < 0.00001f)
-                    return; // évite les angles foireux si la souris est "sur" le perso
+    void Rotation()
+    {
+        Vector3 MouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition); // je récupère la position de ma souris en fonction de la camera
+        MouseWorldPos.z = 0f;
 
-                float angle = Mathf.Atan2(RotationDir.y, RotationDir.x) * Mathf.Rad2Deg + lookOffset; //opération mathématoqie pour la rotation sur l'axe X et Y
-                transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        Vector2 RotationDir = (MouseWorldPos - transform.position);
 
-            }
+        if (RotationDir.magnitude < 0.00001f)
+            return; // évite les angles foireux si la souris est "sur" le perso
+
+        float angle = Mathf.Atan2(RotationDir.y, RotationDir.x) * Mathf.Rad2Deg + lookOffset; //opération mathématoqie pour la rotation sur l'axe X et Y
+        transform.rotation = Quaternion.Euler(0f, 0f, angle);
+
+    } 
     void LateUpdate()
     {
         Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);

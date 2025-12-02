@@ -1,4 +1,4 @@
-using CodeMonkey.Utils;
+ï»¿using CodeMonkey.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,16 +15,16 @@ public class EnnemieAIColliderFOV : MonoBehaviour
     [Header("FOV")]
     [Range(10f, 360f)]
     [SerializeField] private float fov = 120f;                      // Angle d'ouverture
-    [SerializeField] private float viewDistance = 15f;              // Portée max 
-    [SerializeField] private int rayCount = 60;                     // Densité des raycasts
+    [SerializeField] private float viewDistance = 15f;              // PortÃ©e max 
+    [SerializeField] private int rayCount = 60;                     // DensitÃ© des raycasts
 
     [Header("Masques")]
-    [SerializeField] private LayerMask obstacleMask;                // Murs, décors bloquants
+    [SerializeField] private LayerMask obstacleMask;                // Murs, dÃ©cors bloquants
     [SerializeField] private LayerMask targetMask;                  // Joueur (optionnel si tu utilises tags)
     
     [Header("Orientation")]
-    [SerializeField] private bool lookAtTarget = false;            // Sinon, utilise la direction de l’ennemi
-    [SerializeField] private Vector2 forwardLocal = Vector2.right; // Avance locale (par défaut +X)
+    [SerializeField] private bool lookAtTarget = false;            // Sinon, utilise la direction de lâ€™ennemi
+    [SerializeField] private Vector2 forwardLocal = Vector2.right; // Avance locale (par dÃ©faut +X)
 
     [Header("Debug")]
     public Vector3 CharacterPosition = Vector3.zero;
@@ -33,7 +33,7 @@ public class EnnemieAIColliderFOV : MonoBehaviour
     private Mesh mesh;
     private PolygonCollider2D poly;
     private Vector3 origin;
-    private float startingAngleDeg; // angle de départ en degrés (bord gauche du cône)
+    private float startingAngleDeg; // angle de dÃ©part en degrÃ©s (bord gauche du cÃ´ne)
 
     private void Awake()
     {
@@ -54,7 +54,7 @@ public class EnnemieAIColliderFOV : MonoBehaviour
 
     private void LateUpdate()
     {
-        // 1) Définir l’origine et l’orientation du FOV
+        // 1) DÃ©finir lâ€™origine et lâ€™orientation du FOV
         origin = transform.position;
 
         // Calcul de la direction avant en monde
@@ -72,7 +72,7 @@ public class EnnemieAIColliderFOV : MonoBehaviour
 
         // Centre du FOV
         float centerAngleDeg = GetAngleFromVectorFloat(forwardWorld);
-        // Bord gauche = centre + fov/2 (sens horaire négatif ensuite)
+        // Bord gauche = centre + fov/2 (sens horaire nÃ©gatif ensuite)
         startingAngleDeg = centerAngleDeg + (fov * 0.5f);
 
         // 2) Construire le mesh + le chemin du PolygonCollider2D
@@ -98,7 +98,7 @@ public class EnnemieAIColliderFOV : MonoBehaviour
             Vector3 dir = UtilsClass.GetVectorFromAngle(angle);     // direction en monde (normale)
             Vector3 vertexLocal;
 
-            // Raycast obstacles : limite la portée au premier obstacle
+            // Raycast obstacles : limite la portÃ©e au premier obstacle
             RaycastHit2D hit = Physics2D.Raycast(origin, dir, viewDistance, obstacleMask);
             if (hit.collider == null)
                 vertexLocal = dir * viewDistance;
@@ -126,7 +126,7 @@ public class EnnemieAIColliderFOV : MonoBehaviour
         mesh.triangles = triangles;
         mesh.bounds = new Bounds(Vector3.zero, Vector3.one * (viewDistance * 2f + 1f));
 
-        // Met à jour le polygon collider (1 seul chemin)
+        // Met Ã  jour le polygon collider (1 seul chemin)
         poly.pathCount = 1;
         poly.SetPath(0, path);
     }
@@ -140,19 +140,20 @@ public class EnnemieAIColliderFOV : MonoBehaviour
         return n;
     }
 
-    // Triggers basés sur le PolygonCollider2D
+    // Triggers basÃ©s sur le PolygonCollider2D
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Vision") || collision.CompareTag("Player"))
         {
-            CharacterPosition = Target != null ? Target.position : collision.transform.position;
-            if (CircileSound != null) CircileSound.Stop();
-
             if (EnnemieScriptBase != null)
             {
                 EnnemieScriptBase.IsCharacter = true;
                 EnnemieScriptBase.CharacterPosition = CharacterPosition;
             }
+        }
+        if(collision.CompareTag("Player"))
+        { 
+        if (CircileSound != null) CircileSound.Stop();
         }
     }
     
@@ -172,7 +173,7 @@ public class EnnemieAIColliderFOV : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Vision") || collision.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
             if (CircileSound != null) CircileSound.Play();
         }

@@ -36,15 +36,12 @@ public class EnnemieAI : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(  IsCharacter);
         if (IsCharacter == false)
         {
-            Debug.Log("Deplacemnt entre les Points");
             Déplacement();
         }
         else if (IsCharacter == true)
         {
-            Debug.Log("Deplacemnt vers le character");
             DéplacementToCharacter();
         }
     }
@@ -89,6 +86,7 @@ public class EnnemieAI : MonoBehaviour
     { 
         yield return new WaitForSeconds(delay);
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
