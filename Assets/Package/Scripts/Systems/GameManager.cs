@@ -7,12 +7,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Audio;
 
-    [Header("Volume")]
-    [Range(0f, 1f)] public float MusicVolume = 1f;
+    [SerializeField] private AudioSource Musique;
 
     void Start()
     {
-        
+        Musique.Play();
     }
 
     // Update is called once per frame
