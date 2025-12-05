@@ -29,14 +29,20 @@ public class EnnemieAIColliderFOV : MonoBehaviour
     [Header("Debug")]
     public Vector3 CharacterPosition = Vector3.zero;
 
+    [Header("Sound")]
+    [SerializeField] private AudioSource Repéré;
+
     // Internes
     private Mesh mesh;
     private PolygonCollider2D poly;
     private Vector3 origin;
     private float startingAngleDeg; // angle de départ en degrés (bord gauche du cône)
 
+    private bool IsSpotted = false;
+
     private void Awake()
     {
+        Repéré = GetComponentInParent<AudioSource>();
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
 
@@ -147,8 +153,10 @@ public class EnnemieAIColliderFOV : MonoBehaviour
         {
             if (EnnemieScriptBase != null)
             {
+                Repéré.Play();
                 EnnemieScriptBase.IsCharacter = true;
                 EnnemieScriptBase.CharacterPosition = CharacterPosition;
+                IsSpotted = true;
             }
         }
         if(collision.CompareTag("Player"))
@@ -160,29 +168,33 @@ public class EnnemieAIColliderFOV : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Vision") || collision.CompareTag("Player"))
+        if (IsSpotted)
         {
-            if(Target != null)
+            if (collision.CompareTag("Vision") || collision.CompareTag("Player"))
             {
-                CharacterPosition = Target.position;
-            }
-            else
-            {
-                CharacterPosition = collision.transform.position;
-            }
-            if (EnnemieScriptBase != null)
-            {
-                EnnemieScriptBase.IsCharacter = true;
-                EnnemieScriptBase.CharacterPosition = CharacterPosition;
+                if (Target != null)
+                {
+                    CharacterPosition = Target.position;
+                }
+                else
+                {
+                    CharacterPosition = collision.transform.position;
+                }
+                if (EnnemieScriptBase != null)
+                {
+                    EnnemieScriptBase.IsCharacter = true;
+                    EnnemieScriptBase.CharacterPosition = CharacterPosition;
+                }
             }
         }
-    }
+ }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Vision"))
         {
             if (CircileSound != null) CircileSound.Play();
+            IsSpotted = false;
         }
     }
 

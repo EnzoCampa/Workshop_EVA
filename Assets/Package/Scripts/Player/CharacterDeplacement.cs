@@ -1,4 +1,5 @@
 using CodeMonkey.Utils;
+using NUnit.Framework.Constraints;
 using Unity.VisualScripting;
 using UnityEngine;
 public class PlayerController : MonoBehaviour
@@ -9,6 +10,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float lookOffset = 0f;
     [SerializeField] private FieldOfView fieldOfView;
     [SerializeField] private FieldOfView fieldOfViewCircle;
+    [SerializeField] private AudioSource AudioClick;
+    [SerializeField] private AudioSource AudioWalk;
+
+    [SerializeField] private AudioClip Click;
+    [SerializeField] private AudioClip Walking;
 
     float MoveHorizontal, MoveVertical;
 
@@ -21,6 +27,8 @@ public class PlayerController : MonoBehaviour
     Vector2 movement;
     void Start()
     {
+        AudioWalk.clip = Walking;
+        AudioClick.clip = Click;
         RB = GetComponent<Rigidbody2D>(); // Cette ligne sert a remplir la variable RB avec les informations du rigibody
         RB.freezeRotation = true;
 
@@ -39,6 +47,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            AudioClick.Play();
             if (IsLightOn)  
                 {
                     fieldOfView.gameObject.SetActive(false);
@@ -59,9 +68,9 @@ public class PlayerController : MonoBehaviour
             movement = Vector2.zero;
             return;
         }
+
         MoveHorizontal = Input.GetAxisRaw("Horizontal"); // ici je définis mon movehorizontal et vertical qui sont des float 
         MoveVertical = Input.GetAxisRaw("Vertical");     // avec l'imput vertical et horizontal
-
         movement = new Vector2(MoveHorizontal, MoveVertical).normalized;
     }
 
@@ -93,10 +102,24 @@ public class PlayerController : MonoBehaviour
         fieldOfViewCircle.SetAimDirection(aimDir);
     }
 
-    private void FixedUpdate()
+    private void MovementSound()
+    {
+        if (movement.magnitude > 0.1f)
         {
+            if (!AudioWalk.isPlaying) AudioWalk.Play();
+        }
+        else
+        {
+            if (AudioWalk.isPlaying) AudioWalk.Stop();
+        }
+    }
+
+    private void FixedUpdate()
+    {
         Deplacement();
         Rotation();
         RB.linearVelocity = movement * movespeed; //Calcul du déplacement 
-        }
+        MovementSound();
+
     }
+}
