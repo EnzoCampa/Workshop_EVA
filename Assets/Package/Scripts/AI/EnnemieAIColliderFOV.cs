@@ -1,6 +1,7 @@
 ﻿using CodeMonkey.Utils;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.GridLayoutGroup;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(PolygonCollider2D))]
@@ -21,16 +22,20 @@ public class EnnemieAIColliderFOV : MonoBehaviour
     [Header("Masques")]
     [SerializeField] private LayerMask obstacleMask;                // Murs, décors bloquants
     [SerializeField] private LayerMask targetMask;                  // Joueur (optionnel si tu utilises tags)
+
     
     [Header("Orientation")]
-    [SerializeField] private bool lookAtTarget = false;            // Sinon, utilise la direction de l’ennemi
+    [SerializeField] private bool lookAtTarget = true;            // Sinon, utilise la direction de l’ennemi
     [SerializeField] private Vector2 forwardLocal = Vector2.right; // Avance locale (par défaut +X)
+    [SerializeField] private Transform owner;
 
     [Header("Debug")]
     public Vector3 CharacterPosition = Vector3.zero;
 
     [Header("Sound")]
     [SerializeField] private AudioSource Repéré;
+
+    
 
     // Internes
     private Mesh mesh;
@@ -58,12 +63,15 @@ public class EnnemieAIColliderFOV : MonoBehaviour
         }
     }
 
+   
     private void LateUpdate()
     {
+        // S'assurer que le FOV est au même endroit (si pas enfant du perso)
+        if (owner != null) transform.position = owner.position;
+
         // 1) Définir l’origine et l’orientation du FOV
         origin = transform.position;
 
-        // Calcul de la direction avant en monde
         Vector2 forwardWorld;
         if (lookAtTarget && Target != null)
         {
@@ -72,16 +80,17 @@ public class EnnemieAIColliderFOV : MonoBehaviour
         }
         else
         {
-            // Convertit un vecteur local (ex: +X) en monde
-            forwardWorld = (Vector2)(transform.TransformDirection((Vector3)forwardLocal)).normalized;
+            // Utiliser l’orientation de l’owner (et pas celle du GO FOV)
+            forwardWorld = (owner != null)
+                ? (Vector2)owner.TransformDirection((Vector3)forwardLocal)
+                : (Vector2)transform.TransformDirection((Vector3)forwardLocal);
+
+            forwardWorld = forwardWorld.normalized;
         }
 
-        // Centre du FOV
         float centerAngleDeg = GetAngleFromVectorFloat(forwardWorld);
-        // Bord gauche = centre + fov/2 (sens horaire négatif ensuite)
         startingAngleDeg = centerAngleDeg + (fov * 0.5f);
 
-        // 2) Construire le mesh + le chemin du PolygonCollider2D
         if (rayCount < 3) rayCount = 3;
         float angle = startingAngleDeg;
         float angleDecrease = fov / rayCount;
@@ -91,25 +100,18 @@ public class EnnemieAIColliderFOV : MonoBehaviour
         int[] triangles = new int[rayCount * 3];
 
         vertices[0] = Vector3.zero;
-
-        // Chemin du polygon collider (en local)
-        List<Vector2> path = new List<Vector2>(rayCount + 2);
-        path.Add(Vector2.zero);
+        List<Vector2> path = new List<Vector2>(rayCount + 2) { Vector2.zero };
 
         int vertexIndex = 1;
         int triangleIndex = 0;
 
         for (int i = 0; i <= rayCount; i++)
         {
-            Vector3 dir = UtilsClass.GetVectorFromAngle(angle);     // direction en monde (normale)
+            Vector3 dir = UtilsClass.GetVectorFromAngle(angle);
             Vector3 vertexLocal;
 
-            // Raycast obstacles : limite la portée au premier obstacle
             RaycastHit2D hit = Physics2D.Raycast(origin, dir, viewDistance, obstacleMask);
-            if (hit.collider == null)
-                vertexLocal = dir * viewDistance;
-            else
-                vertexLocal = (Vector3)hit.point - origin;
+            vertexLocal = (hit.collider == null) ? dir * viewDistance : (Vector3)hit.point - origin;
 
             vertices[vertexIndex] = vertexLocal;
             path.Add((Vector2)vertexLocal);
@@ -132,12 +134,91 @@ public class EnnemieAIColliderFOV : MonoBehaviour
         mesh.triangles = triangles;
         mesh.bounds = new Bounds(Vector3.zero, Vector3.one * (viewDistance * 2f + 1f));
 
-        // Met à jour le polygon collider (1 seul chemin)
         poly.pathCount = 1;
         poly.SetPath(0, path);
     }
 
-  
+
+    //private void LateUpdate()
+    //{
+    //    // 1) Définir l’origine et l’orientation du FOV
+    //    origin = transform.position;
+
+    //    // Calcul de la direction avant en monde
+    //    Vector2 forwardWorld;
+    //    if (lookAtTarget && Target != null)
+    //    {
+    //        Vector2 dirToTarget = (Target.position - origin).normalized;
+    //        forwardWorld = dirToTarget;
+    //    }
+    //    else
+    //    {
+    //        // Convertit un vecteur local (ex: +X) en monde
+    //        forwardWorld = (Vector2)(transform.TransformDirection((Vector3)forwardLocal)).normalized;
+    //    }
+
+    //    // Centre du FOV
+    //    float centerAngleDeg = GetAngleFromVectorFloat(forwardWorld);
+    //    // Bord gauche = centre + fov/2 (sens horaire négatif ensuite)
+    //    startingAngleDeg = centerAngleDeg + (fov * 0.5f);
+
+    //    // 2) Construire le mesh + le chemin du PolygonCollider2D
+    //    if (rayCount < 3) rayCount = 3;
+    //    float angle = startingAngleDeg;
+    //    float angleDecrease = fov / rayCount;
+
+    //    Vector3[] vertices = new Vector3[rayCount + 2];
+    //    Vector2[] uv = new Vector2[vertices.Length];
+    //    int[] triangles = new int[rayCount * 3];
+
+    //    vertices[0] = Vector3.zero;
+
+    //    // Chemin du polygon collider (en local)
+    //    List<Vector2> path = new List<Vector2>(rayCount + 2);
+    //    path.Add(Vector2.zero);
+
+    //    int vertexIndex = 1;
+    //    int triangleIndex = 0;
+
+    //    for (int i = 0; i <= rayCount; i++)
+    //    {
+    //        Vector3 dir = UtilsClass.GetVectorFromAngle(angle);     // direction en monde (normale)
+    //        Vector3 vertexLocal;
+
+    //        // Raycast obstacles : limite la portée au premier obstacle
+    //        RaycastHit2D hit = Physics2D.Raycast(origin, dir, viewDistance, obstacleMask);
+    //        if (hit.collider == null)
+    //            vertexLocal = dir * viewDistance;
+    //        else
+    //            vertexLocal = (Vector3)hit.point - origin;
+
+    //        vertices[vertexIndex] = vertexLocal;
+    //        path.Add((Vector2)vertexLocal);
+
+    //        if (i > 0)
+    //        {
+    //            triangles[triangleIndex + 0] = 0;
+    //            triangles[triangleIndex + 1] = vertexIndex - 1;
+    //            triangles[triangleIndex + 2] = vertexIndex;
+    //            triangleIndex += 3;
+    //        }
+
+    //        vertexIndex++;
+    //        angle -= angleDecrease;
+    //    }
+
+    //    mesh.Clear();
+    //    mesh.vertices = vertices;
+    //    mesh.uv = uv;
+    //    mesh.triangles = triangles;
+    //    mesh.bounds = new Bounds(Vector3.zero, Vector3.one * (viewDistance * 2f + 1f));
+
+    //    // Met à jour le polygon collider (1 seul chemin)
+    //    poly.pathCount = 1;
+    //    poly.SetPath(0, path);
+    //}
+
+
     private static float GetAngleFromVectorFloat(Vector2 dir)
     {
         dir = dir.normalized;

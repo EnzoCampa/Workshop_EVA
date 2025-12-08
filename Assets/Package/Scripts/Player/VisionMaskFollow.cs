@@ -12,7 +12,7 @@ public class VisionMaskFollow : MonoBehaviour
         visionMask.position = transform.position;
         visionMask.rotation = transform.rotation; // ou l’angle de visée
 
-        // Adapter la taille à la portée (selon ton sprite)
+        // Adapter la taille à la portée (selon le sprite)
         visionMask.localScale = Vector3.one * (visionRange * coneScale);
     }
 }

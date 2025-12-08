@@ -49,15 +49,39 @@ public class EnnemieAI : MonoBehaviour
             meshRenderer.enabled = IsCharacter;
         }
     }
-
     void Déplacement()
     {
         if (Vector2.Distance(transform.position, PatrolPoints[TargetPoint].position) < 0.1f)
         {
             IncreaseTargetInt();
         }
-        Agent.SetDestination(Vector3.MoveTowards(transform.position, PatrolPoints[TargetPoint].position, speed * Time.deltaTime));
+
+        Agent.SetDestination(PatrolPoints[TargetPoint].position);
+
+        Vector3 moveDir = Agent.desiredVelocity;
+
+        if (moveDir.sqrMagnitude > 0.001f)
+        {
+            float angle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
+        }
     }
+
+    //void Déplacement()
+    //{
+    //    if (Vector2.Distance(transform.position, PatrolPoints[TargetPoint].position) < 0.1f)
+    //    {
+    //        IncreaseTargetInt();
+    //    }
+    //    Agent.SetDestination(Vector3.MoveTowards(transform.position, PatrolPoints[TargetPoint].position, speed * Time.deltaTime));
+    //    Vector3 moveDir = PatrolPoints[TargetPoint].position - transform.position;
+
+    //    if (moveDir.sqrMagnitude > 0.001f)
+    //    {
+    //        float angle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
+    //        transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f); // Ajuste le -90° selon ton sprite
+    //    }
+    //}
 
     void IncreaseTargetInt()
     {

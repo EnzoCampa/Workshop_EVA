@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using CodeMonkey.Utils;
+﻿using CodeMonkey.Utils;
 using System.Collections.Generic;
+using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(PolygonCollider2D))]
@@ -9,6 +9,7 @@ public class FieldOfView : MonoBehaviour
     [SerializeField] private LayerMask layerMask;  // obstacles
     [SerializeField] private float fov = 45f;
     [SerializeField] private float viewDistance = 15f;
+    [SerializeField] private float offset = 10f;
 
     private Mesh mesh;
     private Vector3 origin;
@@ -54,6 +55,7 @@ public class FieldOfView : MonoBehaviour
                 vertexLocal = dir * viewDistance;
             else
                 vertexLocal = (Vector3)hit.point - origin;
+
 
             vertices[vertexIndex] = vertexLocal;
             path.Add((Vector2)vertexLocal);
