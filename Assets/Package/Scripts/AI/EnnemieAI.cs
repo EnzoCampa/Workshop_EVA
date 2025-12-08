@@ -20,9 +20,11 @@ public class EnnemieAI : MonoBehaviour
     private Rigidbody2D rb;
     public bool IsCharacter = false;
     public Vector3 CharacterPosition = Vector3.zero;
+    private Renderer meshRenderer;
 
     void Awake()
     {
+        meshRenderer = GetComponent<Renderer>();
         rb = GetComponent<Rigidbody2D>();
         TargetPoint = 0;
     }
@@ -39,10 +41,12 @@ public class EnnemieAI : MonoBehaviour
         if (IsCharacter == false)
         {
             Déplacement();
+            meshRenderer.enabled = IsCharacter;
         }
         else if (IsCharacter == true)
         {
             DéplacementToCharacter();
+            meshRenderer.enabled = IsCharacter;
         }
     }
 
