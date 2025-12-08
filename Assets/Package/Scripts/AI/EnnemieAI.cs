@@ -4,6 +4,7 @@ using UnityEngine.AI;
 using Unity.Mathematics;
 using UnityEngine.Splines;
 using NUnit.Framework.Constraints;
+using UnityEngine.SceneManagement;
 
 public class EnnemieAI : MonoBehaviour
 {
@@ -119,8 +120,7 @@ public class EnnemieAI : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            UnityEditor.EditorApplication.isPlaying = false;
-            Application.Quit();
+            SceneManager.LoadSceneAsync(3);
         }
     }
 

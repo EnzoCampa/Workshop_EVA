@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EndLevel : MonoBehaviour
 {
@@ -6,8 +7,7 @@ public class EndLevel : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            UnityEditor.EditorApplication.isPlaying = false;
-            Application.Quit();
+            SceneManager.LoadSceneAsync(2);
         }
     }
 }
