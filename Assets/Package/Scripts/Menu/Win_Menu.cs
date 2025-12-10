@@ -5,11 +5,27 @@ public class Win_Menu : MonoBehaviour
 {
     public void Replay()
     {
-        SceneManager.LoadSceneAsync(1);
+        // Relance la scène de jeu (index 1) avec transition
+        if (SceneTransition.Instance != null)
+        {
+            SceneTransition.Instance.LoadSceneWithTransition(1);
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(1);
+        }
     }
+
     public void MainMenu()
     {
-        SceneManager.LoadSceneAsync(0);
+        // Retour au menu principal (index 0) avec transition
+        if (SceneTransition.Instance != null)
+        {
+            SceneTransition.Instance.LoadSceneWithTransition(0);
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(0);
+        }
     }
 }
-

@@ -1,31 +1,35 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+
 public class Timer : MonoBehaviour
 {
-    [SerializeField]
-    public float time;
+    [SerializeField] public float time;
     public Text TimerText;
     public Image Fill;
     public float Max;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private bool hasTriggeredDefeat = false; // Évite les appels multiples
 
-    // Update is called once per frame
     void Update()
     {
         time -= Time.deltaTime;
         TimerText.text = "" + (int)time;
         Fill.fillAmount = time / Max;
 
-        if (time < 0)
+        if (time <= 0 && !hasTriggeredDefeat)
         {
+            hasTriggeredDefeat = true;
             time = 0;
-            SceneManager.LoadSceneAsync(3);
+
+            // Utilise la transition pour charger la scène de défaite (index 3)
+            if (SceneTransition.Instance != null)
+            {
+                SceneTransition.Instance.LoadSceneWithTransition(3);
+            }
+            else
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(3); // Fallback
+            }
         }
     }
 }

@@ -120,7 +120,15 @@ public class EnnemieAI : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            SceneManager.LoadSceneAsync(3);
+            // Utilise la transition pour charger la scène de défaite (index 3)
+            if (SceneTransition.Instance != null)
+            {
+                SceneTransition.Instance.LoadSceneWithTransition(3);
+            }
+            else
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(3); // Fallback
+            }
         }
     }
 
