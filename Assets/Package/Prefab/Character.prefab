@@ -764,7 +764,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c0556fcd5476804e9c4dc704c633b91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time: 10
+  time: 150
   TimerText: {fileID: 4695349251449229629}
   Fill: {fileID: 7605306307415822215}
   Max: 10

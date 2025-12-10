@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class Timer : MonoBehaviour
 {
+    [SerializeField]
     public float time;
     public Text TimerText;
     public Image Fill;
     public float Max;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,7 +22,10 @@ public class Timer : MonoBehaviour
         TimerText.text = "" + (int)time;
         Fill.fillAmount = time / Max;
 
-        if(time < 0)
-        time = 0;
+        if (time < 0)
+        {
+            time = 0;
+            SceneManager.LoadSceneAsync(3);
+        }
     }
 }
