@@ -30309,6 +30309,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
+    - target: {fileID: 6121890557077801288, guid: d3414fd32c8430c4abcc30e5e8278be8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 3416.7175
+      objectReference: {fileID: 0}
+    - target: {fileID: 6121890557077801288, guid: d3414fd32c8430c4abcc30e5e8278be8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 2133.669
+      objectReference: {fileID: 0}
+    - target: {fileID: 6121890557077801288, guid: d3414fd32c8430c4abcc30e5e8278be8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.00001878
+      objectReference: {fileID: 0}
+    - target: {fileID: 6121890557077801288, guid: d3414fd32c8430c4abcc30e5e8278be8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.00314381
+      objectReference: {fileID: 0}
     - target: {fileID: 6570739853506762190, guid: d3414fd32c8430c4abcc30e5e8278be8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -162.85
