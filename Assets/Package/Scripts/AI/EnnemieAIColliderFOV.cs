@@ -108,7 +108,7 @@ public class EnnemieAIColliderFOV : MonoBehaviour
         for (int i = 0; i <= rayCount; i++)
         {
             Vector3 dir = UtilsClass.GetVectorFromAngle(angle);
-            Vector3 vertexLocal;
+            Vector3 vertexLocal;    
 
             RaycastHit2D hit = Physics2D.Raycast(origin, dir, viewDistance, obstacleMask);
             vertexLocal = (hit.collider == null) ? dir * viewDistance : (Vector3)hit.point - origin;

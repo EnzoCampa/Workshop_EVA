@@ -61,11 +61,11 @@ public class EnnemieAI : MonoBehaviour
 
         Vector3 moveDir = Agent.desiredVelocity;
 
-        if (moveDir.sqrMagnitude > 0.001f)
-        {
-            float angle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
-        }
+        //if (moveDir.sqrMagnitude > 0.001f)
+        //{
+        //    float angle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
+        //    transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
+        //}
     }
 
     //void Déplacement()

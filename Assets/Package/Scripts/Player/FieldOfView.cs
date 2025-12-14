@@ -10,7 +10,7 @@ public class FieldOfView : MonoBehaviour
     [SerializeField] private float fov = 45f;
     [SerializeField] private float viewDistance = 15f;
     [SerializeField] private float offset = 10f;
-
+    [SerializeField] int rayCount = 50;
     private Mesh mesh;
     private Vector3 origin;
     private float startingAngle;
@@ -28,7 +28,7 @@ public class FieldOfView : MonoBehaviour
     {
         transform.position = origin;
 
-        int rayCount = 50;
+        
         float angle = startingAngle;
         float angleIncrease = fov / rayCount;
 

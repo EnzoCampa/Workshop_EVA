@@ -6297,7 +6297,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7347218606434738391, guid: 6b62a225dba96f14a90090ec7cd180c9, type: 3}
       propertyPath: fov
-      value: 70
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 7347218606434738391, guid: 6b62a225dba96f14a90090ec7cd180c9, type: 3}
       propertyPath: owner
@@ -7068,7 +7068,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7347218606434738391, guid: 6b62a225dba96f14a90090ec7cd180c9, type: 3}
       propertyPath: fov
-      value: 70
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 7347218606434738391, guid: 6b62a225dba96f14a90090ec7cd180c9, type: 3}
       propertyPath: owner
@@ -7315,7 +7315,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7347218606434738391, guid: 6b62a225dba96f14a90090ec7cd180c9, type: 3}
       propertyPath: fov
-      value: 70
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 7347218606434738391, guid: 6b62a225dba96f14a90090ec7cd180c9, type: 3}
       propertyPath: owner
@@ -11609,7 +11609,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7347218606434738391, guid: 6b62a225dba96f14a90090ec7cd180c9, type: 3}
       propertyPath: fov
-      value: 70
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 7347218606434738391, guid: 6b62a225dba96f14a90090ec7cd180c9, type: 3}
       propertyPath: owner
@@ -22618,7 +22618,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7347218606434738391, guid: 6b62a225dba96f14a90090ec7cd180c9, type: 3}
       propertyPath: fov
-      value: 70
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 7347218606434738391, guid: 6b62a225dba96f14a90090ec7cd180c9, type: 3}
       propertyPath: owner
@@ -27977,7 +27977,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7347218606434738391, guid: 6b62a225dba96f14a90090ec7cd180c9, type: 3}
       propertyPath: fov
-      value: 70
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 7347218606434738391, guid: 6b62a225dba96f14a90090ec7cd180c9, type: 3}
       propertyPath: owner
@@ -30716,7 +30716,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7347218606434738391, guid: 6b62a225dba96f14a90090ec7cd180c9, type: 3}
       propertyPath: fov
-      value: 70
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 7347218606434738391, guid: 6b62a225dba96f14a90090ec7cd180c9, type: 3}
       propertyPath: owner
