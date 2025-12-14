@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float lookOffset = 0f;
     [SerializeField] private FieldOfView fieldOfView;
     [SerializeField] private FieldOfViewCircle fieldOfViewCircle;
+    [SerializeField] private Sortie Sortie;
     [SerializeField] private AudioSource AudioClick;
     [SerializeField] private AudioSource AudioWalk;
 

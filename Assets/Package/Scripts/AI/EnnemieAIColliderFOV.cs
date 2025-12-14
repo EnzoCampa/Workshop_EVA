@@ -167,9 +167,6 @@ public class EnnemieAIColliderFOV : MonoBehaviour
                 EnnemieScriptBase.CharacterPosition = CharacterPosition;
                 if (!IsSpotted) IsSpotted = true;
             }
-        }
-        if(collision.CompareTag("Player"))
-        { 
         if (CircileSound != null) CircileSound.Stop();
         }
     }
