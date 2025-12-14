@@ -11,6 +11,7 @@ public class FieldOfView : MonoBehaviour
     [SerializeField] private float viewDistance = 15f;
     [SerializeField] private float offset = 10f;
     [SerializeField] int rayCount = 50;
+    [SerializeField] private float viewportRadius = 0.5f;
     private Mesh mesh;
     private Vector3 origin;
     private float startingAngle;
@@ -26,6 +27,10 @@ public class FieldOfView : MonoBehaviour
 
     void LateUpdate()
     {
+        Vector2 mouseViewport = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+        Vector2 direct = mouseViewport - new Vector2(0.5f, 0.5f);
+        if (direct.sqrMagnitude > 1e-8f) direct.Normalize();
+            Vector2 offset = direct * viewportRadius;
         transform.position = origin;
 
         
@@ -54,7 +59,7 @@ public class FieldOfView : MonoBehaviour
             if (hit.collider == null)
                 vertexLocal = dir * viewDistance;
             else
-                vertexLocal = (Vector3)hit.point - origin;
+                vertexLocal = (Vector3)(hit.point + offset) - origin;
 
 
             vertices[vertexIndex] = vertexLocal;

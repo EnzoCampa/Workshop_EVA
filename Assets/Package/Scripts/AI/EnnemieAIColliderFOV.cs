@@ -34,8 +34,9 @@ public class EnnemieAIColliderFOV : MonoBehaviour
 
     [Header("Sound")]
     [SerializeField] private AudioSource Repéré;
+    [SerializeField] private AudioClip Exclamation;
 
-    
+
 
     // Internes
     private Mesh mesh;
@@ -45,6 +46,10 @@ public class EnnemieAIColliderFOV : MonoBehaviour
 
     private bool IsSpotted = false;
 
+    private void Start()
+    {
+        Repéré.clip = Exclamation;
+    }
     private void Awake()
     {
         Repéré = GetComponentInParent<AudioSource>();
@@ -66,6 +71,7 @@ public class EnnemieAIColliderFOV : MonoBehaviour
    
     private void LateUpdate()
     {
+        Debug.Log(IsSpotted);
         // S'assurer que le FOV est au même endroit (si pas enfant du perso)
         if (owner != null) transform.position = owner.position;
 
@@ -138,88 +144,7 @@ public class EnnemieAIColliderFOV : MonoBehaviour
         poly.SetPath(0, path);
     }
 
-
-    //private void LateUpdate()
-    //{
-    //    // 1) Définir l’origine et l’orientation du FOV
-    //    origin = transform.position;
-
-    //    // Calcul de la direction avant en monde
-    //    Vector2 forwardWorld;
-    //    if (lookAtTarget && Target != null)
-    //    {
-    //        Vector2 dirToTarget = (Target.position - origin).normalized;
-    //        forwardWorld = dirToTarget;
-    //    }
-    //    else
-    //    {
-    //        // Convertit un vecteur local (ex: +X) en monde
-    //        forwardWorld = (Vector2)(transform.TransformDirection((Vector3)forwardLocal)).normalized;
-    //    }
-
-    //    // Centre du FOV
-    //    float centerAngleDeg = GetAngleFromVectorFloat(forwardWorld);
-    //    // Bord gauche = centre + fov/2 (sens horaire négatif ensuite)
-    //    startingAngleDeg = centerAngleDeg + (fov * 0.5f);
-
-    //    // 2) Construire le mesh + le chemin du PolygonCollider2D
-    //    if (rayCount < 3) rayCount = 3;
-    //    float angle = startingAngleDeg;
-    //    float angleDecrease = fov / rayCount;
-
-    //    Vector3[] vertices = new Vector3[rayCount + 2];
-    //    Vector2[] uv = new Vector2[vertices.Length];
-    //    int[] triangles = new int[rayCount * 3];
-
-    //    vertices[0] = Vector3.zero;
-
-    //    // Chemin du polygon collider (en local)
-    //    List<Vector2> path = new List<Vector2>(rayCount + 2);
-    //    path.Add(Vector2.zero);
-
-    //    int vertexIndex = 1;
-    //    int triangleIndex = 0;
-
-    //    for (int i = 0; i <= rayCount; i++)
-    //    {
-    //        Vector3 dir = UtilsClass.GetVectorFromAngle(angle);     // direction en monde (normale)
-    //        Vector3 vertexLocal;
-
-    //        // Raycast obstacles : limite la portée au premier obstacle
-    //        RaycastHit2D hit = Physics2D.Raycast(origin, dir, viewDistance, obstacleMask);
-    //        if (hit.collider == null)
-    //            vertexLocal = dir * viewDistance;
-    //        else
-    //            vertexLocal = (Vector3)hit.point - origin;
-
-    //        vertices[vertexIndex] = vertexLocal;
-    //        path.Add((Vector2)vertexLocal);
-
-    //        if (i > 0)
-    //        {
-    //            triangles[triangleIndex + 0] = 0;
-    //            triangles[triangleIndex + 1] = vertexIndex - 1;
-    //            triangles[triangleIndex + 2] = vertexIndex;
-    //            triangleIndex += 3;
-    //        }
-
-    //        vertexIndex++;
-    //        angle -= angleDecrease;
-    //    }
-
-    //    mesh.Clear();
-    //    mesh.vertices = vertices;
-    //    mesh.uv = uv;
-    //    mesh.triangles = triangles;
-    //    mesh.bounds = new Bounds(Vector3.zero, Vector3.one * (viewDistance * 2f + 1f));
-
-    //    // Met à jour le polygon collider (1 seul chemin)
-    //    poly.pathCount = 1;
-    //    poly.SetPath(0, path);
-    //}
-
-
-    private static float GetAngleFromVectorFloat(Vector2 dir)
+        private static float GetAngleFromVectorFloat(Vector2 dir)
     {
         dir = dir.normalized;
         float n = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -234,10 +159,13 @@ public class EnnemieAIColliderFOV : MonoBehaviour
         {
             if (EnnemieScriptBase != null)
             {
-                Repéré.Play();
+                if (IsSpotted)
+                {
+                    Repéré.Play();
+                }
                 EnnemieScriptBase.IsCharacter = true;
                 EnnemieScriptBase.CharacterPosition = CharacterPosition;
-                IsSpotted = true;
+                if (!IsSpotted) IsSpotted = true;
             }
         }
         if(collision.CompareTag("Player"))
@@ -272,10 +200,10 @@ public class EnnemieAIColliderFOV : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Vision"))
+        if (collision.CompareTag("Vision") || collision.CompareTag("Player"))   
         {
-            if (CircileSound != null) CircileSound.Play();
             IsSpotted = false;
+            if (CircileSound != null) CircileSound.Play();
         }
     }
 

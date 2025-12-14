@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float movespeed = 6;
     [SerializeField] float lookOffset = 0f;
     [SerializeField] private FieldOfView fieldOfView;
-    [SerializeField] private FieldOfView fieldOfViewCircle;
+    [SerializeField] private FieldOfViewCircle fieldOfViewCircle;
     [SerializeField] private AudioSource AudioClick;
     [SerializeField] private AudioSource AudioWalk;
 
@@ -39,6 +39,8 @@ public class PlayerController : MonoBehaviour
             Vector3 aimDir = (targetPosition - transform.position).normalized;
             fieldOfView.SetAimDirection(aimDir);
             fieldOfView.SetOrigin(transform.position);
+            fieldOfViewCircle.SetAimDirection(aimDir);
+            fieldOfViewCircle.SetOrigin(transform.position);
         });
     }
 
@@ -98,8 +100,8 @@ public class PlayerController : MonoBehaviour
         fieldOfView.SetOrigin(transform.position);
         fieldOfView.SetAimDirection(aimDir);
 
-        fieldOfViewCircle.SetOrigin(transform.position);
         fieldOfViewCircle.SetAimDirection(aimDir);
+        fieldOfViewCircle.SetOrigin(transform.position);
     }
 
     private void MovementSound()
