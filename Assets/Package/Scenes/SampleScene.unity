@@ -31137,7 +31137,7 @@ PrefabInstance:
       objectReference: {fileID: 1306356299}
     - target: {fileID: 350311559091614849, guid: d3414fd32c8430c4abcc30e5e8278be8, type: 3}
       propertyPath: movespeed
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 350311559091614849, guid: d3414fd32c8430c4abcc30e5e8278be8, type: 3}
       propertyPath: fieldOfViewCircle
